@@ -1,52 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>EmailJS Form</title>
-
-  <!-- EmailJS SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-</head>
-
-<body>
-
-<form id="loginForm">
-  <input type="text" id="username" placeholder="Username" required>
-  <input type="number" id="age" placeholder="Age" required>
-  <button type="submit">Submit</button>
-</form>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
 <script>
-window.onload = function () {
+window.addEventListener("load", function () {
 
-  // ✅ init AFTER everything loads
+  // ✅ safer init (GitHub Pages compatible)
   emailjs.init("GoSY4pHiSJNnwdmQU");
 
-  document.getElementById('loginForm').addEventListener('submit', function(e) {
+  const form = document.getElementById("loginForm");
+
+  form.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    const username = document.getElementById('username').value;
-    const age = document.getElementById('age').value;
+    const username = document.getElementById("username").value;
+    const age = document.getElementById("age").value;
 
-    const params = {
+    emailjs.send("service_cvhvjxv", "template_7ddcn92", {
       username: username,
       age: age
-    };
-
-    emailjs.send("service_cvhvjxv", "template_7ddcn92", params)
-      .then(() => {
-        alert("Data sent successfully!");
-        document.getElementById('loginForm').reset();
-      })
-      .catch((error) => {
-        console.error("EmailJS error:", error);
-        alert("Failed to send data.");
-      });
+    })
+    .then(() => {
+      alert("Sent successfully!");
+      form.reset();
+    })
+    .catch((err) => {
+      console.error("EmailJS error:", err);
+      alert("Failed to send");
+    });
 
   });
 
-};
+});
 </script>
-
-</body>
-</html>

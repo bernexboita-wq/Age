@@ -1,3 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EmailJS Form</title>
+
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+
+<body>
 
 <form id="loginForm">
   <input type="text" id="username" placeholder="Username" required>
@@ -5,12 +16,11 @@
   <button type="submit">Submit</button>
 </form>
 
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
 <script>
-  emailjs.init({
-    publicKey: "GoSY4pHiSJNnwdmQU",
-  });
+window.onload = function () {
+
+  // ✅ init AFTER everything loads
+  emailjs.init("GoSY4pHiSJNnwdmQU");
 
   document.getElementById('loginForm').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -18,27 +28,25 @@
     const username = document.getElementById('username').value;
     const age = document.getElementById('age').value;
 
-    if (username && age) {
+    const params = {
+      username: username,
+      age: age
+    };
 
-      const params = {
-        username: username,
-        age: age
-      };
-
-      emailjs.send(
-        "service_cvhvjxv",
-        "template_7ddcn92",
-        params
-      )
-      .then(function() {
+    emailjs.send("service_cvhvjxv", "template_7ddcn92", params)
+      .then(() => {
         alert("Data sent successfully!");
         document.getElementById('loginForm').reset();
       })
-      .catch(function(error) {
+      .catch((error) => {
         console.error("EmailJS error:", error);
         alert("Failed to send data.");
       });
 
-    }
   });
+
+};
 </script>
+
+</body>
+</html>

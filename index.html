@@ -1,0 +1,44 @@
+
+<form id="loginForm">
+  <input type="text" id="username" placeholder="Username" required>
+  <input type="number" id="age" placeholder="Age" required>
+  <button type="submit">Submit</button>
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
+  emailjs.init({
+    publicKey: "YOUR_PUBLIC_KEY",
+  });
+
+  document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const username = document.getElementById('username').value;
+    const age = document.getElementById('age').value;
+
+    if (username && age) {
+
+      const params = {
+        username: username,
+        age: age
+      };
+
+      emailjs.send(
+        "YOUR_SERVICE_ID",
+        "YOUR_TEMPLATE_ID",
+        params
+      )
+      .then(function() {
+        alert("Data sent successfully!");
+        document.getElementById('loginForm').reset();
+      })
+      .catch(function(error) {
+        console.error("EmailJS error:", error);
+        alert("Failed to send data.");
+      });
+
+    }
+  });
+</script>
